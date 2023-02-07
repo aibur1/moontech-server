@@ -1,11 +1,11 @@
 const express = require('express');
 const { MongoClient, ServerApiVersion, ObjectId } = require("mongodb");
 const app = express();
-const bodyParser= require('body-parser')
+const bodyParser= require('body-parser');
 const cors = require("cors");
 require('dotenv').config();
 
-const port = 5000
+const port = 5000;
 
 
 app.use(cors());
@@ -43,6 +43,15 @@ const run = async () => {
       const result = await productCollection.deleteOne({ _id: ObjectId(id) });
       res.send(result);
     });
+
+    app.patch("/product/:id", async (req, res) => {
+      const id = req.params.id;
+      const data = req.body;
+      const result = await productCollection.updateMany({_id  : ObjectId(id)}, {$set: data});
+      res.json(result);
+    });
+
+
   } finally {
   }
 };
