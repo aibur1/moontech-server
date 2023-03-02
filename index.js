@@ -29,12 +29,21 @@ const run = async () => {
       
       res.send({ status: true, data: product });
     });
+
+    
     
 
     app.post("/product", async (req, res) => {
       const product = req.body;
       const result = await productCollection.insertOne(product);
   
+      res.send(result);
+    });
+
+    app.get("/products/:id", async (req, res) => {
+      const id = req.params.id;
+      const result = await productCollection.findOne({_id:ObjectId(id)});
+      console.log(result);
       res.send(result);
     });
 
@@ -48,7 +57,7 @@ const run = async () => {
     app.patch("/product/:id", async (req, res) => {
       const id = req.params.id;
       const data = req.body;
-      console.log("backend-->", id, data);
+      console.log("backend-->",data);
       const result = await productCollection.updateOne({_id  : ObjectId(id)}, {$set: data});
       res.json(result);
     });
